@@ -1,7 +1,8 @@
 // Import required AWS SDK clients and commands for Node.js
 import {ddbClient} from "../db_connection.js";
+import { v4 as uuidv4 } from 'uuid';
 
-const { CreateTableCommand, DeleteTableCommand, PutItemCommand, ScanCommand } = require("@aws-sdk/client-dynamodb")
+import { CreateTableCommand, DeleteTableCommand, PutItemCommand, ScanCommand } from "@aws-sdk/client-dynamodb"
 const table_name = 'city'
 
 // Set the parameters
@@ -9,7 +10,7 @@ export const params = {
     AttributeDefinitions: [
         {
             AttributeName: "id", //ATTRIBUTE_NAME_1
-            AttributeType: "N", //ATTRIBUTE_TYPE
+            AttributeType: "S", //ATTRIBUTE_TYPE
         },
         {
             AttributeName: "city", //ATTRIBUTE_NAME_2
@@ -55,12 +56,12 @@ export const delete_table = async () => {
     }
 }
 
-export const addItem = async (id, city) => {
+export const addItem = async (city) => {
     try {
         const data = await ddbClient.send(new PutItemCommand({
             TableName: table_name,
             Item: {
-                id: { N: id },
+                id: { S: uuidv4() },
                 city: { S: city }
             }
         }));
@@ -77,19 +78,25 @@ export const scan = async () => {
         const data = await ddbClient.send(new ScanCommand({
             TableName: table_name
         }))
+        let items = []
         data.Items.forEach(function (element) {
-            console.log(element.id.N + " " + element.city.S)
+            console.log(element.id.S + " " + element.city.S)
+            items.push(
+                {
+                    id: element.id.S,
+                    city: element.city.S
+                }
+            )
         })
+        return items
     } catch (err) {
         console.log("Error", err)
     }
 }
 
+export default { scan }
 
-// await create_table()
-// await addItem('1', 'mexicali')
-// delete_table()
-// scan()
+
 
 
 

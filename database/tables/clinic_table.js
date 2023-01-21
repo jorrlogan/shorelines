@@ -1,5 +1,6 @@
 // Import required AWS SDK clients and commands for Node.js
 import { CreateTableCommand, DeleteTableCommand, PutItemCommand, ScanCommand } from "@aws-sdk/client-dynamodb"
+import { v4 as uuidv4 } from 'uuid';
 import {ddbClient} from "../db_connection.js";
 const table_name = 'clinic'
 
@@ -8,7 +9,7 @@ export const params = {
     AttributeDefinitions: [
         {
             AttributeName: "id", //ATTRIBUTE_NAME_1
-            AttributeType: "N", //ATTRIBUTE_TYPE
+            AttributeType: "S", //ATTRIBUTE_TYPE
         },
         {
             AttributeName: "clinic", //ATTRIBUTE_NAME_2
@@ -54,12 +55,12 @@ export const delete_table = async () => {
     }
 }
 
-export const addItem = async (id, name, latitude, longitude, overall_rating) => {
+export const addItem = async (name, latitude, longitude, overall_rating) => {
     try {
         const data = await ddbClient.send(new PutItemCommand({
             TableName: table_name,
             Item: {
-                id: { N: id },
+                id: { S: uuidv4() },
                 clinic: { S: name },
                 latitude: { N: latitude },
                 longitude: { N: longitude },
@@ -82,7 +83,7 @@ export const scan = async () => {
         let items = []
         data.Items.forEach(function (element) {
            items.push( {
-                id: element.id.N,
+                id: element.id.S,
                 clinic: element.clinic.S,
                 latitude: element.latitude.N,
                 longitude: element.longitude.N,
@@ -98,8 +99,9 @@ export const scan = async () => {
 
 export default { addItem, scan }
 
+// delete_table()
 // await create_table()
 // let ratings = [{ rating: 4.5, description: "Great experience with gomez dental"}]
-// addItem("1", "Gomez Dental", "32.663132", "-115.415467", "4.7")
+// addItem( "Gomez Dental", "32.663132", "-115.415467", "4.7")
 // scan()
 

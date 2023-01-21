@@ -1,4 +1,5 @@
 import {CreateTableCommand, DeleteTableCommand, PutItemCommand, ScanCommand} from "@aws-sdk/client-dynamodb";
+import { v4 as uuidv4 } from 'uuid';
 import { ddbClient } from "../db_connection.js";
 
 const table_name = 'procedure'
@@ -7,7 +8,7 @@ export const params = {
     AttributeDefinitions: [
         {
             AttributeName: "id", //ATTRIBUTE_NAME_1
-            AttributeType: "N", //ATTRIBUTE_TYPE
+            AttributeType: "S", //ATTRIBUTE_TYPE
         },
         {
             AttributeName: "name", //ATTRIBUTE_NAME_2
@@ -53,12 +54,12 @@ export const delete_table = async () => {
     }
 }
 
-export const addItem = async (id, name, price, details, time_duration, clinic_id, clinic_name) => {
+export const addItem = async (name, price, details, time_duration, clinic_id, clinic_name) => {
     try {
         const data = await ddbClient.send(new PutItemCommand({
             TableName: table_name,
             Item: {
-                id: { N: id },
+                id: { S: uuidv4() },
                 name: { S: name },
                 price: { S: price },
                 details: { S: details },

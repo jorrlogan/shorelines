@@ -16,6 +16,7 @@ console.log('directory-name 👉️', __dirname);
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
 import clinicRouter from './routes/clinic.js'
+import cityRouter from './routes/city.js'
 
 var app = express();
 
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/clinic', clinicRouter)
+app.use('/city', cityRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
