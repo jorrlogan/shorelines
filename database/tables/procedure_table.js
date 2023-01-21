@@ -86,6 +86,6 @@ export const scan = async () => {
     }
 }
 
-// await create_table()
-// await addItem("1", "Teeth Cleaning", "120", "Get your teeth cleaned", "90 minutes", "1", "Gomez Dental")
-// scan()
+export default { addItem, scan }
+// await addItem("Teeth Cleaning", "120", "Get your teeth cleaned", "90 minutes", "1", "Gomez Dental")
+
