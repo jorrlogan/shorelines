@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node server",
+    "dev": "nodemon server"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.254.0",
@@ -16,5 +17,13 @@
     "pug": "2.0.0-beta11",
     "uuid": "^9.0.0"
   },
-  "type": "module"
+  "type": "module",
+  "main": "app.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
 }
