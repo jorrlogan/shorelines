@@ -18,7 +18,12 @@ import usersRouter from './routes/users.js';
 import clinicRouter from './routes/clinic.js'
 import cityRouter from './routes/city.js'
 
-var app = express();
+const app = express();
+
+//testing data
+app.get("/api", (req, res) => {
+  res.json({"users": ["userOne", "userTwo", "userThree"]});
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -51,9 +56,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(3000, () => {
-  console.log(`Example app listening on port ${3000}`)
-})
+app.listen(3000, () => { console.log(`Example app listening on port ${3000}`) })
 
 export default app
 // module.exports = app;
